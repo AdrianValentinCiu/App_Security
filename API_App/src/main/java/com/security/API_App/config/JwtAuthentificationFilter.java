@@ -22,5 +22,15 @@ public class JwtAuthentificationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain    // the list of filters we need to execute
     ) throws ServletException, IOException {
 
+        final String authHeader = request.getHeader("Authorization");
+        final String jwtToken;
+        final String userEmail;
+        if(authHeader == null || !authHeader.startsWith("Bearer ")){
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        jwtToken = authHeader.substring(7); // extract the Token
+        //userEmail = // extract the UserEmail from JWT token  // 46:56
     }
 }
