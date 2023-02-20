@@ -27,12 +27,12 @@ public class LogoutService implements LogoutHandler {
       System.out.println("null token");
       return;
     }
-    System.out.println("token good");
     jwt = authHeader.substring(7);
+    System.out.println(jwt);
     var storedToken = tokenRepository.findByToken(jwt)
         .orElse(null);
     if (storedToken != null) {
-      System.out.println("token found");
+      System.out.println(storedToken.getToken());
       storedToken.setExpired(true);
       storedToken.setRevoked(true);
       tokenRepository.save(storedToken);

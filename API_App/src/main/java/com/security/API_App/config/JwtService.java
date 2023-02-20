@@ -18,11 +18,11 @@ import java.util.function.Function;
 public class JwtService {
     private static final String SECRET_KEY = "472D4B6150645367566B597033733676397924423F4528482B4D625165546857";
 
-    public String extractUserName(String token) {
-        return extarctClaim(token, Claims::getSubject); // :: = method reference operator --> call a method by referring to it with the help of its class directly
+    public String extractUsername(String token) {
+        return extractClaim(token, Claims::getSubject); // :: = method reference operator --> call a method by referring to it with the help of its class directly
     }
 
-    public <T> T extarctClaim(String token, Function<Claims, T> claimsResolver){
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver){
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
@@ -43,7 +43,7 @@ public class JwtService {
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) { // method which validates the token
-        final  String username = extractUserName(token);
+        final  String username = extractUsername(token);
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
@@ -52,7 +52,7 @@ public class JwtService {
     }
 
     private Date extractExpiration(String token) {
-        return extarctClaim(token, Claims::getExpiration);
+        return extractClaim(token, Claims::getExpiration);
     }
 
     private Claims extractAllClaims(String token){
