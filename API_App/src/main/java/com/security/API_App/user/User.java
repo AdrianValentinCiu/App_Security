@@ -1,5 +1,6 @@
 package com.security.API_App.user;
 
+import com.security.API_App.token.Token;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,6 +27,9 @@ public class User implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING) // takes a String values of enum
     private Role role;
+
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() { // List of ROLEs
