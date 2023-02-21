@@ -40,7 +40,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         jwt = authHeader.substring(7);
         userEmail = jwtService.extractUsername(jwt); // extract the UserEmail from JWT token
-        System.out.println(userEmail);
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) { // check also if the user is already authenticated
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
             var isTokenValid = tokenRepository.findByToken(jwt)
@@ -58,7 +57,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
-        filterChain.doFilter(request, response);
+        if(SecurityContextHolder.getContext().getAuthentication() != null)
+            filterChain.doFilter(request, response);
     }
 }
 
