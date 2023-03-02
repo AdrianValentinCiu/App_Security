@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class RegistrationService {
     private final ConfirmationTokenService confirmationTokenService;
-//    @Autowired
     private EmailService emailService;
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
@@ -31,10 +30,8 @@ public class RegistrationService {
                 .lastName(request.getLastName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                //.password(request.getPassword())
                 .role(Role.USER)
                 .enabled(false)
-                //.loggedin(false)
                 .build();
 
         String token = userService.signUpUser(user);

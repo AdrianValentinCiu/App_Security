@@ -1,4 +1,4 @@
-package com.security.API_App.demo.config;
+package com.security.API_App.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -39,7 +39,7 @@ public class JwtService {
                 .setIssuedAt(new Date(System.currentTimeMillis()))   // to check if the token is still valid
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))   // token valid for 24h
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)    // converts Json in Token
-                .compact(); // generates and returns the token
+                .compact(); // generates and returns the token as String
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) { // method which validates the token

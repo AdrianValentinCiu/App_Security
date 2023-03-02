@@ -1,4 +1,4 @@
-package com.security.API_App.demo.config;
+package com.security.API_App.config;
 
 import com.security.API_App.token.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,7 +32,7 @@ public class LogoutService implements LogoutHandler {
     var storedToken = tokenRepository.findByToken(jwt)
         .orElse(null);
     if (storedToken != null) {
-      System.out.println(storedToken.getToken());
+      //System.out.println(storedToken.getToken());
       storedToken.setExpired(true);
       storedToken.setRevoked(true);
       tokenRepository.save(storedToken);

@@ -1,6 +1,6 @@
 package com.security.API_App.auth;
 
-import com.security.API_App.demo.config.JwtService;
+import com.security.API_App.config.JwtService;
 import com.security.API_App.token.Token;
 import com.security.API_App.token.TokenRepository;
 import com.security.API_App.token.TokenType;
