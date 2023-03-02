@@ -23,13 +23,18 @@ public class RegistrationService {
     private final UserService userService;
 
     public String register(RegistrationRequest request) {
-        // TO DO: test if the email is already in th DB
+        System.out.println(request.getEmail());
+        System.out.println(request.getPassword());
+        System.out.println(passwordEncoder.encode(request.getPassword()));
         var user = User.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
+                //.password(request.getPassword())
                 .role(Role.USER)
+                .enabled(false)
+                //.loggedin(false)
                 .build();
 
         String token = userService.signUpUser(user);

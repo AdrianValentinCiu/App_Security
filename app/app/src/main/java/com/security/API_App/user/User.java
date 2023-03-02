@@ -24,13 +24,14 @@ public class User implements UserDetails {
     private String lastName;
     private String email;
     private String password;
+    private Boolean enabled;
     @Enumerated(EnumType.STRING) // takes a String values of enum
     private Role role;
 
     //@Column(columnDefinition = "boolean default false")
-    private Boolean enabled;
+
     //@Column(columnDefinition = "boolean default false")
-    private Boolean loggedin;
+    //private Boolean loggedin;
 
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;

@@ -26,9 +26,9 @@ public class UserService {
             throw new IllegalStateException("email already taken");
         }
 
-        String encodedPassword = bCryptPasswordEncoder.encode(appUser.getPassword());
+        //String encodedPassword = bCryptPasswordEncoder.encode(appUser.getPassword());
 
-        appUser.setPassword(encodedPassword);
+        //appUser.setPassword(encodedPassword);
 
         userRepository.save(appUser); // POST
 
