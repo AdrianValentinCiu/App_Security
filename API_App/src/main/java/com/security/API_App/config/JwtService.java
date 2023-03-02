@@ -38,7 +38,7 @@ public class JwtService {
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))   // to check if the token is still valid
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24))   // token valid for 24h
-                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)    // converts Json in Token
                 .compact(); // generates and returns the token
     }
 

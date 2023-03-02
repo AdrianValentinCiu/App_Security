@@ -28,6 +28,9 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING) // takes a String values of enum
     private Role role;
 
+    private Boolean enabled = false;
+    private Boolean loggedin = false;
+
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
 

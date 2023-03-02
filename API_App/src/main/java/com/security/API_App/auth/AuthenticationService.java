@@ -23,22 +23,23 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final TokenRepository tokenRepository;
     // to do with email account validation
-    public AuthenticationResponse register(RegisterRequest request) { // to do with email
-        var user = User.builder()
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.USER)
-                .build();
-        //repository.save(user);
-        var savedUser = repository.save(user);
-        var jwtToken = jwtService.generateToken(user);
-        saveUserToken(savedUser, jwtToken);
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .build();
-    }
+//    public AuthenticationResponse register(RegisterRequest request) { // to do with email
+//        var user = User.builder()
+//                .firstName(request.getFirstName())
+//                .lastName(request.getLastName())
+//                .email(request.getEmail())
+//                .password(passwordEncoder.encode(request.getPassword()))
+//                .role(Role.USER)
+//                 // enabled && loggedin false by default
+//                .build();
+//        //repository.save(user);
+//        var savedUser = repository.save(user);
+//        var jwtToken = jwtService.generateToken(user);
+//        saveUserToken(savedUser, jwtToken);
+//        return AuthenticationResponse.builder()
+//                .token(jwtToken)
+//                .build();
+//    }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
