@@ -21,7 +21,7 @@ public class RegistrationService {
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
 
-    public String register(RegistrationRequest request) {
+    public boolean register(RegistrationRequest request) {
         System.out.println(request.getEmail());
         System.out.println(request.getPassword());
         System.out.println(passwordEncoder.encode(request.getPassword()));
@@ -41,30 +41,32 @@ public class RegistrationService {
                 request.getEmail(),
                 buildEmail(request.getFirstName(), link));
 
-        return token;
+        return true;
     }
 
     @Transactional
-    public String confirmToken(String token) {
+    public boolean confirmToken(String token) {
         ConfirmationToken confirmationToken = confirmationTokenService
                 .getToken(token)
                 .orElseThrow(() ->
                         new IllegalStateException("token not found"));
 
         if (confirmationToken.getConfirmedAt() != null) {
-            throw new IllegalStateException("email already confirmed");
+            //throw new IllegalStateException("email already confirmed");
+            return false;
         }
 
         LocalDateTime expiredAt = confirmationToken.getExpiresAt();
 
         if (expiredAt.isBefore(LocalDateTime.now())) {
-            throw new IllegalStateException("token expired");
+            return false;
+            //throw new IllegalStateException("token expired");
         }
 
         confirmationTokenService.setConfirmedAt(token);
         userService.enableAppUser(
                 confirmationToken.getUser().getEmail());
-        return "confirmed";
+        return true;
     }
 
     private String buildEmail(String name, String link) {

@@ -52,7 +52,7 @@ public class AuthenticationService {
         saveUserToken(user, jwtToken);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
-                .id(user.getId())
+                //.id(user.getId())
                 .build();
     }
 

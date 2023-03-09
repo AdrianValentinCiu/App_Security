@@ -12,5 +12,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AuthenticationResponse {
     private String token; // token sent back to the user/customer
-    private Integer id;
+   // private Integer id;
 }
