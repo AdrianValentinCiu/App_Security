@@ -1,4 +1,4 @@
-package com.security.API_App.auth;
+package com.security.API_App.register;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

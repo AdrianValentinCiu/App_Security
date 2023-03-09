@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -48,4 +49,18 @@ public class UserService {
     public int enableAppUser(String email) {
         return userRepository.enableAppUser(email);
     }
+
+    public String findUserByFirstName(String email){
+        System.out.println("Service");
+        Optional<User> user = userRepository.findByEmail(email);
+        String name = "abc";
+        if(user.isPresent()) {
+            name = user.get().getFirstName();
+        }
+        System.out.println("name is");
+        System.out.println(name);
+        return name;
+    }
 }
+
+
