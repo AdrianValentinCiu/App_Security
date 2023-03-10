@@ -2,6 +2,7 @@ package com.security.API_App.changepassword;
 
 import com.security.API_App.email.EmailResponse;
 import com.security.API_App.email.EmailService;
+import com.security.API_App.token.token_validate.TokenResponse;
 import com.security.API_App.token.token_validate.ValidateToken;
 import com.security.API_App.token.token_validate.ValidateTokenService;
 import com.security.API_App.user.UserService;
@@ -26,7 +27,8 @@ public class ChangePasswordService {
         String chgPsdToken = String.format("%04d", random.nextInt(10000));
         emailService.sendMail(
                 emailResponse.getEmail(),
-                emailService.buildEmail(userService.getUserFirstName(emailResponse.getEmail()), chgPsdToken, "Change your account password\n", false));
+                emailService.buildEmail(userService.getUserFirstName(emailResponse.getEmail()), chgPsdToken, "Change your account password\n", false),
+                "Change your password");
         ValidateToken validateToken = new ValidateToken(
                 chgPsdToken,
                 LocalDateTime.now(),
@@ -38,24 +40,31 @@ public class ChangePasswordService {
     }
 
     @Transactional
-    public boolean confirmPasswordCode(String token){
+    public boolean confirmPasswordCode(TokenResponse tokenResponse){
         // Confirm the token in the DB
-        ValidateToken confirmationToken = validateTokenService
-                .getToken(token)
+        ValidateToken validateToken = validateTokenService
+                .getToken(tokenResponse.getToken())
                 .orElseThrow(() ->
                         new IllegalStateException("token not found"));
 
-        if (confirmationToken.getConfirmedAt() != null) {
+        if (validateToken.getConfirmedAt() != null) {
             //throw new IllegalStateException("email already confirmed");
             return false;
         }
 
-        LocalDateTime expiredAt = confirmationToken.getExpiresAt();
+        if (validateToken.getUser().getId() != userService.getUser(tokenResponse.getEmail()).getId()) { // ID matching
+            //throw new IllegalStateException("email already confirmed");
+            return false;
+        }
+
+        LocalDateTime expiredAt = validateToken.getExpiresAt();
 
         if (expiredAt.isBefore(LocalDateTime.now())) {
             return false;
             //throw new IllegalStateException("token expired");
         }
+
+        validateTokenService.setConfirmedAt(tokenResponse.getToken());
 
         return true;
     }

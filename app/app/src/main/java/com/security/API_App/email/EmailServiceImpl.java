@@ -19,14 +19,14 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     @Async
-    public void sendMail(String to, String email)
+    public void sendMail(String to, String email, String title)
     {
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "utf-8");
             message.setFrom("adrian@ciu.com");
             message.setTo(to);
-            message.setSubject("Confirm your email");
+            message.setSubject(title);
             message.setText(email, true);
             mailSender.send(mimeMessage);
         }
