@@ -1,4 +1,4 @@
-package com.security.API_App.token;
+package com.security.API_App.token.token_account;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

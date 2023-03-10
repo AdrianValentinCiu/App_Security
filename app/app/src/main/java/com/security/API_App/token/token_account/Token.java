@@ -1,4 +1,4 @@
-package com.security.API_App.token;
+package com.security.API_App.token.token_account;
 
 import com.security.API_App.user.User;
 import jakarta.persistence.*;

@@ -1,8 +1,8 @@
 package com.security.API_App.register;
 
 import com.security.API_App.email.EmailService;
-import com.security.API_App.register.token_registration.ConfirmationToken;
-import com.security.API_App.register.token_registration.ConfirmationTokenService;
+import com.security.API_App.token.token_validate.ValidateToken;
+import com.security.API_App.token.token_validate.ValidateTokenService;
 import com.security.API_App.user.Role;
 import com.security.API_App.user.User;
 import com.security.API_App.user.UserService;
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Service
 @AllArgsConstructor
 public class RegistrationService {
-    private final ConfirmationTokenService confirmationTokenService;
+    private final ValidateTokenService validateTokenService;
     private EmailService emailService;
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
@@ -43,7 +43,7 @@ public class RegistrationService {
 
     @Transactional
     public boolean confirmToken(String token) {
-        ConfirmationToken confirmationToken = confirmationTokenService
+        ValidateToken confirmationToken = validateTokenService
                 .getToken(token)
                 .orElseThrow(() ->
                         new IllegalStateException("token not found"));
@@ -60,7 +60,7 @@ public class RegistrationService {
             //throw new IllegalStateException("token expired");
         }
 
-        confirmationTokenService.setConfirmedAt(token);
+        validateTokenService.setConfirmedAt(token);
         userService.enableAppUser(
                 confirmationToken.getUser().getEmail());
         return true;

@@ -1,26 +1,22 @@
-package com.security.API_App.changepassword.token_change_password;
+package com.security.API_App.token.token_validate;
 
 import com.security.API_App.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @Entity
-public class ChangePasswordToken {
+public class ValidateToken {
     @Id
     @GeneratedValue
     public Integer id;
 
     @Column(nullable = false)
-    private Integer token;
+    private String token;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
@@ -33,4 +29,14 @@ public class ChangePasswordToken {
     @ManyToOne
     @JoinColumn(name = "user_id")
     public User user;
+
+    public ValidateToken(String token,
+                         LocalDateTime createdAt,
+                         LocalDateTime expiresAt,
+                         User user) {
+        this.token = token;
+        this.createdAt = createdAt;
+        this.expiresAt = expiresAt;
+        this.user = user;
+    }
 }

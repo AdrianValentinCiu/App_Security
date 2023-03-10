@@ -1,7 +1,7 @@
 package com.security.API_App.user;
 
-import com.security.API_App.register.token_registration.ConfirmationToken;
-import com.security.API_App.register.token_registration.ConfirmationTokenService;
+import com.security.API_App.token.token_validate.ValidateToken;
+import com.security.API_App.token.token_validate.ValidateTokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ public class UserService {
     private final static String USER_NOT_FOUND_MSG = "user with email %s not found";
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final ConfirmationTokenService confirmationTokenService;
+    private final ValidateTokenService confirmationTokenService;
 
     public String signUpUser(User appUser) {
 
@@ -35,14 +35,14 @@ public class UserService {
 
         String token = UUID.randomUUID().toString(); // create token
 
-        ConfirmationToken confirmationToken = new ConfirmationToken(
+        ValidateToken confirmationToken = new ValidateToken(
                 token,
                 LocalDateTime.now(),
                 LocalDateTime.now().plusMinutes(15),
                 appUser
         );
 
-        confirmationTokenService.saveConfirmationToken(confirmationToken);
+        confirmationTokenService.saveValidateToken(confirmationToken);
         return token; // generated token for email confirmation
     }
 
@@ -50,16 +50,22 @@ public class UserService {
         return userRepository.enableAppUser(email);
     }
 
-    public String findUserByFirstName(String email){
-        System.out.println("Service");
+    public String getUserFirstName(String email){
         Optional<User> user = userRepository.findByEmail(email);
-        String name = "abc";
+        String name = "not found";
         if(user.isPresent()) {
             name = user.get().getFirstName();
         }
-        System.out.println("name is");
-        System.out.println(name);
         return name;
+    }
+
+    public User getUser(String email){
+        Optional<User> user = userRepository.findByEmail(email);
+        String name = "not found";
+        if(user.isPresent()) {
+            return  user.get();
+        }
+        return null;
     }
 }
 

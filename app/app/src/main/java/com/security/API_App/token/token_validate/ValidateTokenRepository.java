@@ -1,4 +1,4 @@
-package com.security.API_App.register.token_registration;
+package com.security.API_App.token.token_validate;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -11,14 +11,14 @@ import java.util.Optional;
 
 @Repository
 @Transactional(readOnly = true)
-public interface ConfirmationTokenRepository
-        extends JpaRepository<ConfirmationToken, Integer> {
+public interface ValidateTokenRepository
+        extends JpaRepository<ValidateToken, Integer> {
 
-    Optional<ConfirmationToken> findByToken(String token);
+    Optional<ValidateToken> findByToken(String token);
 
     @Transactional
     @Modifying
-    @Query("UPDATE ConfirmationToken c " +
+    @Query("UPDATE ValidateToken c " +
             "SET c.confirmedAt = ?2 " +
             "WHERE c.token = ?1")
     int updateConfirmedAt(String token,

@@ -1,34 +1,61 @@
 package com.security.API_App.changepassword;
 
-import com.security.API_App.config.JwtService;
 import com.security.API_App.email.EmailResponse;
 import com.security.API_App.email.EmailService;
-import com.security.API_App.register.RegistrationRequest;
-import com.security.API_App.register.token_registration.ConfirmationTokenService;
-import com.security.API_App.token.TokenRepository;
-import com.security.API_App.user.Role;
-import com.security.API_App.user.User;
-import com.security.API_App.user.UserRepository;
+import com.security.API_App.token.token_validate.ValidateToken;
+import com.security.API_App.token.token_validate.ValidateTokenService;
 import com.security.API_App.user.UserService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.Random;
 
 @Service
 @AllArgsConstructor
 public class ChangePasswordService {
-    private final ConfirmationTokenService confirmationTokenService;
+    private final ValidateTokenService validateTokenService;
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
 
     public boolean sendPasswordCode(EmailResponse emailResponse) {
-        System.out.println("Inside");
+        Random random = new Random();
+        String chgPsdToken = String.format("%04d", random.nextInt(10000));
         emailService.sendMail(
                 emailResponse.getEmail(),
-                emailService.buildEmail(userService.findUserByFirstName(emailResponse.getEmail()), "5679", "Change your account password\n", false));
+                emailService.buildEmail(userService.getUserFirstName(emailResponse.getEmail()), chgPsdToken, "Change your account password\n", false));
+        ValidateToken validateToken = new ValidateToken(
+                chgPsdToken,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(15),
+                userService.getUser(emailResponse.getEmail())
+        );
+        validateTokenService.saveValidateToken(validateToken);
+        return true;
+    }
+
+    @Transactional
+    public boolean confirmPasswordCode(String token){
+        // Confirm the token in the DB
+        ValidateToken confirmationToken = validateTokenService
+                .getToken(token)
+                .orElseThrow(() ->
+                        new IllegalStateException("token not found"));
+
+        if (confirmationToken.getConfirmedAt() != null) {
+            //throw new IllegalStateException("email already confirmed");
+            return false;
+        }
+
+        LocalDateTime expiredAt = confirmationToken.getExpiresAt();
+
+        if (expiredAt.isBefore(LocalDateTime.now())) {
+            return false;
+            //throw new IllegalStateException("token expired");
+        }
 
         return true;
     }

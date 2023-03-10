@@ -1,6 +1,6 @@
 package com.security.API_App.user;
 
-import com.security.API_App.token.Token;
+import com.security.API_App.token.token_account.Token;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;

@@ -1,9 +1,9 @@
 package com.security.API_App.auth;
 
 import com.security.API_App.config.JwtService;
-import com.security.API_App.token.Token;
-import com.security.API_App.token.TokenRepository;
-import com.security.API_App.token.TokenType;
+import com.security.API_App.token.token_account.Token;
+import com.security.API_App.token.token_account.TokenRepository;
+import com.security.API_App.token.token_account.TokenType;
 import com.security.API_App.user.User;
 import com.security.API_App.user.UserRepository;
 import lombok.RequiredArgsConstructor;
