@@ -26,10 +26,9 @@ public class ChangePasswordService {
 
     public boolean sendPasswordCode(EmailResponse emailResponse) {
         System.out.println("Inside");
-        //System.out.println(userService.findUserByFirstName(emailResponse.getEmail()));
         emailService.sendMail(
                 emailResponse.getEmail(),
-                emailService.buildEmail(userService.findUserByFirstName(emailResponse.getEmail()), "TEST"));
+                emailService.buildEmail(userService.findUserByFirstName(emailResponse.getEmail()), "5679", "Change your account password\n", false));
 
         return true;
     }
