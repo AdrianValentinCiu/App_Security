@@ -46,6 +46,10 @@ public class UserService {
         return token; // generated token for email confirmation
     }
 
+    public void updateUser(User user){
+        userRepository.save(user);
+    }
+
     public int enableAppUser(String email) {
         return userRepository.enableAppUser(email);
     }

@@ -2,6 +2,7 @@ package com.security.API_App.changepassword;
 
 import com.security.API_App.email.EmailResponse;
 import com.security.API_App.register.RegistrationRequest;
+import com.security.API_App.token.token_validate.NewPasswordResponse;
 import com.security.API_App.token.token_validate.TokenResponse;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/auth/change_password")
+@RequestMapping("/api/v1/password/change_password")
 @RequiredArgsConstructor
 @CrossOrigin
 public class ChangePasswordController {
@@ -21,9 +22,13 @@ public class ChangePasswordController {
     }
 
 
-    @PostMapping("/validate_email_code")
+    @PutMapping("/validate_email_code")
     public ResponseEntity<String> validatePasswordCode(@RequestBody TokenResponse tokenResponse){
-        System.out.println(tokenResponse.getToken());
         return ResponseEntity.ok(changePasswordService.confirmPasswordCode(tokenResponse) + " ");
+    }
+
+    @PutMapping("/new_password")
+    public ResponseEntity<String> changePassword(@RequestBody NewPasswordResponse newPasswordResponse){
+        return ResponseEntity.ok(changePasswordService.changePassword(newPasswordResponse) + " ");
     }
 }

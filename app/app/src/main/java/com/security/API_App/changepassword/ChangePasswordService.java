@@ -2,9 +2,11 @@ package com.security.API_App.changepassword;
 
 import com.security.API_App.email.EmailResponse;
 import com.security.API_App.email.EmailService;
+import com.security.API_App.token.token_validate.NewPasswordResponse;
 import com.security.API_App.token.token_validate.TokenResponse;
 import com.security.API_App.token.token_validate.ValidateToken;
 import com.security.API_App.token.token_validate.ValidateTokenService;
+import com.security.API_App.user.UserRepository;
 import com.security.API_App.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,6 +23,7 @@ public class ChangePasswordService {
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
+    private final UserRepository repository;
 
     public boolean sendPasswordCode(EmailResponse emailResponse) {
         Random random = new Random();
@@ -69,6 +72,12 @@ public class ChangePasswordService {
         return true;
     }
 
-
-
+    @Transactional
+    public boolean changePassword(NewPasswordResponse newPasswordResponse){
+        var user = repository.findByEmail(newPasswordResponse.getEmail()).orElseThrow();
+        user.setPassword(passwordEncoder.encode(newPasswordResponse.getNewPassword()));
+        //user.setPassword(newPasswordResponse.getNewPassword());
+        userService.updateUser(user);
+        return true;
+    }
 }
