@@ -1,5 +1,6 @@
 package com.security.API_App.user;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.security.API_App.token.token_account.Token;
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "_user") // exista deja o tabela user in DB
+@Getter
 public class User implements UserDetails {
     @Id
     @GeneratedValue// default value is AUTO --> (strategy = GenerationType.AUTO) // autogenereaza id-ul
@@ -28,11 +30,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING) // takes a String values of enum
     private Role role;
 
-    //@Column(columnDefinition = "boolean default false")
-
-    //@Column(columnDefinition = "boolean default false")
-    //private Boolean loggedin;
-
+    @JsonManagedReference
     @OneToMany(mappedBy = "user")
     private List<Token> tokens;
 

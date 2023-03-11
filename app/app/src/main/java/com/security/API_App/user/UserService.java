@@ -3,8 +3,10 @@ package com.security.API_App.user;
 import com.security.API_App.token.token_validate.ValidateToken;
 import com.security.API_App.token.token_validate.ValidateTokenService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -65,10 +67,21 @@ public class UserService {
 
     public User getUser(String email){
         Optional<User> user = userRepository.findByEmail(email);
-        String name = "not found";
         if(user.isPresent()) {
             return  user.get();
         }
+        return null;
+    }
+
+    @Transactional(readOnly = true)
+    public User getUser(Integer user_id){
+        System.out.println("Trying to find the user!");
+        Optional<User> user = userRepository.findById(user_id);
+        if(user.isPresent()) {
+            System.out.println("User found!");
+            return  user.get();
+        }
+        System.out.println("User not found!");
         return null;
     }
 }

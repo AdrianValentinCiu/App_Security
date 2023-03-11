@@ -1,5 +1,6 @@
 package com.security.API_App.config;
 
+import com.security.API_App.user.User;
 import com.security.API_App.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

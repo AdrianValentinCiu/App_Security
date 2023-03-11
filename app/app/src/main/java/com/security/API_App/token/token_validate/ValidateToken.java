@@ -1,5 +1,6 @@
 package com.security.API_App.token.token_validate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.security.API_App.user.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -28,6 +29,7 @@ public class ValidateToken {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     public User user;
 
     public ValidateToken(String token,

@@ -66,9 +66,6 @@ public class ChangePasswordService {
             return false;
             //throw new IllegalStateException("token expired");
         }
-
-        validateTokenService.setConfirmedAt(tokenResponse.getToken());
-
         return true;
     }
 
@@ -77,6 +74,7 @@ public class ChangePasswordService {
         var user = repository.findByEmail(newPasswordResponse.getEmail()).orElseThrow();
         user.setPassword(passwordEncoder.encode(newPasswordResponse.getNewPassword()));
         //user.setPassword(newPasswordResponse.getNewPassword());
+        validateTokenService.setConfirmedAt(newPasswordResponse.getToken());
         userService.updateUser(user);
         return true;
     }
